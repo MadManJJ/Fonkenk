@@ -1,9 +1,11 @@
-"use client";
-
+"use client"
 import { useState } from "react";
 import userRegister from "@/libs/userRegister";
+import { useRouter } from 'next/navigation';
 
 const SignUp = () => {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +23,7 @@ const SignUp = () => {
 
     if(name && email && password && role && tel){
       await userRegister(name,email,password,role,tel);
-      window.location.href = "/";
+      router.push('/');
     }
 
   };

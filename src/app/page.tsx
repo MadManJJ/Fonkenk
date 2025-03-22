@@ -1,9 +1,6 @@
 'use client' // for testing signin
 import Image from "next/image";
 import styles from "./page.module.css";
-import { getServerSession } from "next-auth";
-import NextAuthProvider from "@/providers/NextAuthProvider";
-import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
