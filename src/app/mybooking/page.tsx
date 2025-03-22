@@ -1,10 +1,6 @@
-import { useSession } from "next-auth/react"
-import { useRouter } from 'next/navigation';
-import getReservations from "@/libs/Reservations/getReservations";
-import { Suspense } from "react";
 import ReservationCart from "@/components/ReservationCart";
 
-const page = () => {
+const MyBookingPage = () => {
 
   return (
     <main className="text-center p-5">
@@ -14,4 +10,4 @@ const page = () => {
   )
 }
 
-export default page
+export default MyBookingPage

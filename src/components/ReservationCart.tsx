@@ -13,20 +13,22 @@ import Link from "next/link";
 const ReservationCart = () => {
 
     const dispatch = useDispatch<AppDispatch>();
-    const reservationArr = useSelector((state: RootState) => state.cartSlice.reservationItems);
+    const reservationArr = useSelector((state: RootState) => state.cart.reservationItems);
     const { data:session } = useSession();
     const token = session?.user.token;
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getReservations(token);
-            dispatch(fetchReservation(response.data));
+            if(token){
+                const response = await getReservations(token);
+                dispatch(fetchReservation(response.data));
+            }
         }
         fetchData();
     }, [token, dispatch])
 
     if(reservationArr.length == 0){
-        return <div>Loading...</div>
+        return <div>No booking</div>
     }
     // console.log(reservationArr);
 
@@ -44,8 +46,10 @@ const ReservationCart = () => {
             {
                 reservationArr.map((reservationItem:ReservationItem) => (
                     <div className="bg-slate-200 rounded px-5 mx-5 py-2 my-2 text-black" key={reservationItem._id}>
-                        {/* <div className="text-xl">{reservationItem.shop.name}</div> */}
                         <div className="text-sm">{reservationItem.date}</div>
+                        {
+                            reservationItem.shop ? <div className="text-sm">{reservationItem.shop.name}</div> : null
+                        }
                         <button className="mt-2 bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600" onClick={() => {deleteAction(reservationItem._id,reservationItem)}}>
                             Delete
                         </button>

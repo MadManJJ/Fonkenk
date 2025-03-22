@@ -12,6 +12,15 @@ export interface ReservationJson {
     data: ReservationItem[]
 }
 
+export interface User {
+    isBan: boolean,
+    _id: string,
+    name: string,
+    email: string,
+    role: string,
+    telephone: string
+}
+
 export interface Shop {
     _id: string,
     name: string,

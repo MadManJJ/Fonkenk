@@ -42,10 +42,7 @@ const EditBookingPage = ({params} : { params: {id:string}}) => {
   const updateReser = async () => {
     const reservationId = params.id;
     const selectedShop = shops?.find(shop => shop._id === reservationId);
-    const body:UpdateReservationDto = {
-      shop: reservationId,
-      date: dayjs(date).format("YYYY/MM/DD")
-    };
+
     
     try {
       if(selectedShop){
@@ -56,9 +53,14 @@ const EditBookingPage = ({params} : { params: {id:string}}) => {
         }
         dispatch(updateReservationRedux(updateReduxBody)); // redux
       }
-
-      await updateReservation(reservationId, token, body); // database
-      router.push('/mybooking');
+      if(selectedShopId){
+        const body:UpdateReservationDto = {
+          shop: selectedShopId,
+          date: dayjs(date).format("YYYY/MM/DD")
+        };
+        await updateReservation(reservationId, token, body); // database
+        router.push('/mybooking');
+      }
     } catch (error) {
       console.log(error);
     }

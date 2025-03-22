@@ -1,6 +1,7 @@
-export default async function getReservations(token:string|undefined){
+export default async function getReservations(token:string){
 
-    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/reservations`, {
+    
+  const response = await fetch(`${process.env.BACKEND_URL}/api/v1/reservations`, {
         method: 'GET', // default method is GET, you can omit this if it's GET
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,6 @@
 export default async function getReservation(id: string, token: string) {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/reservations/${id}`, {
+
+  const response = await fetch(`${process.env.BACKEND_URL}/api/v1/reservations/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
