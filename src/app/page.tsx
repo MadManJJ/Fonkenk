@@ -1,7 +1,17 @@
+'use client'
 import Image from "next/image";
 import styles from "./page.module.css";
+import { getServerSession } from "next-auth";
+import NextAuthProvider from "@/providers/NextAuthProvider";
+import { authOptions } from "./api/auth/[...nextauth]/authOptions";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+
+  const { data:session } = useSession();
+  console.log(session);
+
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
