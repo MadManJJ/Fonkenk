@@ -1,20 +1,13 @@
 export interface ReservationItem {
-    carId: string,
-    carModel: string,
-    numOfDay: number,
-    pickupDate: string,
-    pickupLocation: string,
-    returnDate: string,
-    returnLocation: string
+    _id: string,
+    user: string,
+    shop: number,
+    date: string,
+    createdAt: string,
+    __v: string,
 }
 
-export interface CarItem {
-    id: string,
-    model: string,
-    picture: string
-}
-
-export interface CarJson {
+export interface ReservationJson {
     count: number,
-    data: CarItem[]
+    data: ReservationItem[]
 }
