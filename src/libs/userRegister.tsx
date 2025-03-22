@@ -1,4 +1,4 @@
-export default async function userLogin(userName:string,userEmail:string, userPassword:string, userRole:string, userTelephone:string){
+export default async function userRegister(userName:string,userEmail:string, userPassword:string, userRole:string, userTelephone:string){
     
     const response = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/register`, {
         method: 'POST',

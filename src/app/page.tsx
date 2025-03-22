@@ -1,4 +1,4 @@
-'use client'
+'use client' // for testing signin
 import Image from "next/image";
 import styles from "./page.module.css";
 import { getServerSession } from "next-auth";
@@ -10,7 +10,6 @@ export default function Home() {
 
   const { data:session } = useSession();
   console.log(session);
-
 
   return (
     <main className={styles.main}>
