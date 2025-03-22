@@ -1,13 +1,13 @@
 'use client'
 import { useEffect } from "react";
 import { ReservationItem } from "../../interfaces";
-import getReservations from "@/libs/getReservations";
+import getReservations from "@/libs/Reservations/getReservations";
 import { AppDispatch } from "@/redux/store";
 import { fetchReservation, removeReservation } from "@/redux/features/cartSlice";
 import { useSelector,useDispatch  } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
-import deleteReservation from "@/libs/deleteReservation";
+import deleteReservation from "@/libs/Reservations/deleteReservation";
 import Link from "next/link";
 
 const ReservationCart = () => {
@@ -28,11 +28,15 @@ const ReservationCart = () => {
     if(reservationArr.length == 0){
         return <div>Loading...</div>
     }
-    console.log(reservationArr);
+    // console.log(reservationArr);
 
     const deleteAction = (id:string,reservationItem:ReservationItem) => {
-        deleteReservation(id,token); // database
-        dispatch(removeReservation(reservationItem)); // state
+        try {
+            deleteReservation(id,token); // database
+            dispatch(removeReservation(reservationItem)); // redux
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (

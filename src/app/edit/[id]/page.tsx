@@ -1,20 +1,20 @@
 'use client'
 import { Select, MenuItem } from "@mui/material"
 import { useEffect, useState } from "react"
-import getAllShops from "@/libs/getAllShops"
+import getAllShops from "@/libs/Shops/getAllShops"
 import { Shop, ShopJson, UpdateReservationDto } from "../../../../interfaces"
 import { DatePicker } from "@mui/x-date-pickers"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import dayjs, { Dayjs } from "dayjs";
-import updateReservation from "@/libs/updateReservation"
+import updateReservation from "@/libs/Reservations/updateReservation"
 import { useSession } from "next-auth/react"
 import { AppDispatch } from "@/redux/store"
 import { useDispatch  } from "react-redux";
 import { updateReservation as updateReservationRedux } from "@/redux/features/cartSlice"
 import { useRouter } from 'next/navigation';
 
-const page = ({params} : { params: {id:string}}) => {
+const EditBookingPage = ({params} : { params: {id:string}}) => {
 
   const [shops, setShops] = useState<Shop[]|null>(null);
   const [selectedShopId, setSelectedShopId] = useState<string|null>(null);
@@ -46,16 +46,23 @@ const page = ({params} : { params: {id:string}}) => {
       shop: reservationId,
       date: dayjs(date).format("YYYY/MM/DD")
     };
-    if(selectedShop){
-      const updateReduxBody = {
-        id: reservationId,
-        shop: selectedShop,
-        date: dayjs(date).format("YYYY/MM/DD")
+    
+    try {
+      if(selectedShop){
+        const updateReduxBody = {
+          id: reservationId,
+          shop: selectedShop,
+          date: dayjs(date).format("YYYY/MM/DD")
+        }
+        dispatch(updateReservationRedux(updateReduxBody)); // redux
       }
-      dispatch(updateReservationRedux(updateReduxBody)); // redux
+
+      await updateReservation(reservationId, token, body); // database
+      router.push('/mybooking');
+    } catch (error) {
+      console.log(error);
     }
-    await updateReservation(reservationId, token, body); // database
-    router.push('/mybooking');
+
   }
 
   return (
@@ -88,4 +95,4 @@ const page = ({params} : { params: {id:string}}) => {
   )
 }
 
-export default page
+export default EditBookingPage

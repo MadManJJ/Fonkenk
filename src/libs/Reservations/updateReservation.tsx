@@ -1,4 +1,4 @@
-import { UpdateReservationDto } from "../../interfaces";
+import { UpdateReservationDto } from "../../../interfaces";
 
 export default async function updateReservation(id:string,token:string|undefined, body:UpdateReservationDto){
     

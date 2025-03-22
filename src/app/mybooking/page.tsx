@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation';
-import getReservations from "@/libs/getReservations";
+import getReservations from "@/libs/Reservations/getReservations";
 import { Suspense } from "react";
 import ReservationCart from "@/components/ReservationCart";
 
