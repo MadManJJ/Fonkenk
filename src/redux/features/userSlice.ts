@@ -15,9 +15,9 @@ export const userSlice = createSlice({
         addUser: (state, action:PayloadAction<User>) => {
             state.user.push(action.payload);
         },
-        removeUser: (state, action:PayloadAction<User>) => {
+        removeUser: (state, action:PayloadAction<string>) => {
             const remainUser = state.user.filter(obj => {
-                return (obj._id !== action.payload._id);
+                return (obj._id !== action.payload);
                 })
             state.user = remainUser;
         },

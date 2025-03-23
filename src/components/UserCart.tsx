@@ -9,8 +9,10 @@ import getUsers from "@/libs/Users/getUsers";
 import { User } from "../../interfaces";
 import banUser from "@/libs/Users/banUser";
 import unbanUser from "@/libs/Users/unbanUser";
+import deleteUser from "@/libs/Users/deleteUser";
 import { banUser as banUserRedux } from "@/redux/features/userSlice";
 import { unbanUser as unbanUserRedux } from "@/redux/features/userSlice";
+import { removeUser } from "@/redux/features/userSlice";
 
 
 const UserCart = () => {
@@ -43,6 +45,15 @@ const UserCart = () => {
             const response = await unbanUser(id,token);
             if(response.success){
                 dispatch(unbanUserRedux(id));
+            }
+        }
+    }
+
+    const handleDelete = async (id:string) => {
+        if(id && token){
+            const response = await deleteUser(id,token);
+            if(response.success){
+                dispatch(removeUser(id));
             }
         }
     }
@@ -89,11 +100,19 @@ const UserCart = () => {
                                 <div>Role : {user.role}</div>
                             </div>
                             <div className="ml-auto">
-                                <button className="w-full block p-2 mb-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700">Delete</button>
-                                <button 
+                                <button className="w-full block p-2 mb-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
+                                onClick={(e) => (handleDelete(user._id))}
+                                >Delete</button>
+                                {
+                                    user.role != 'admin' ?
+                                    <button 
                                     className="w-full block p-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
                                     onClick={(e) => (handleBan(user._id))}
                                     >Ban</button>
+                                    :
+                                    null 
+                                }
+
                             </div>
                         </section>
                     ))
@@ -111,7 +130,9 @@ const UserCart = () => {
                                 <div>Role : {user.role}</div>
                             </div>
                             <div className="ml-auto">
-                                <button className="w-full block p-2 mb-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700">Delete</button>
+                                <button className="w-full block p-2 mb-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
+                                onClick={(e) => (handleDelete(user._id))}
+                                >Delete</button>
                                 <button 
                                     className="w-full block p-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
                                     onClick={(e) => (handleUnBan(user._id))}
