@@ -14,9 +14,9 @@ export default async function userRegister(userName:string,userEmail:string, use
         })
     });
 
-    if(!response.ok){
-        throw new Error("Failed to register")
-    }
+    // if(!response.ok){
+    //     throw new Error("Failed to register")
+    // }
 
     return await response.json();
 }

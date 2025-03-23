@@ -7,8 +7,11 @@ import { addReservation } from "@/redux/features/cartSlice"
 import { useRouter } from 'next/navigation';
 import createReservation from "@/libs/Reservations/createReservation"
 import BookingForm from "@/components/BookingForm"
+import { useState } from "react";
 
 const BookingPage = () => {
+
+  const [error, setError] = useState("");
 
   const { data:session } = useSession();
   const token = session?.user.token;
@@ -22,12 +25,13 @@ const BookingPage = () => {
       date: dayjs(date).format("YYYY/MM/DD")
     }
     if(selectedShopId){
-      try {
-        const response = await createReservation(selectedShopId,token,body); // database
+      const response = await createReservation(selectedShopId,token,body); // database
+      if(response.success){
         dispatch(addReservation(response.data)) // redux
         router.push('/mybooking')
-      } catch (error) {
-        console.log(error);
+      }
+      else{
+        setError("Cannot create Reservation");
       }
     }
   }
@@ -35,6 +39,7 @@ const BookingPage = () => {
   return (
     <div>
       <h1>Book A Reservation</h1>
+      {error && <p className="text-red-500 text-center">{error}</p>}
       <BookingForm onSubmit={handleSubmit}/>
     </div>
   )

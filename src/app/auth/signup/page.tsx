@@ -3,6 +3,7 @@ import { useState } from "react";
 import userRegister from "@/libs/Auth/userRegister";
 import { useRouter } from 'next/navigation';
 import InputForm from "@/components/InputForm";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const SignUp = () => {
   const router = useRouter();
@@ -14,20 +15,32 @@ const SignUp = () => {
   const [tel, setTel] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     setLoading(true);
 
     if(name && email && password && role && tel){
-      await userRegister(name,email,password,role,tel);
-      router.push('/');
+      const response = await userRegister(name,email,password,role,tel);
+      if(response.success){
+        setLoading(false);
+        router.push('/');
+      }
+      else{
+        setLoading(false);
+        setError("Invalid information");
+      }
     }
-
   };
+
+    if(loading){
+        return (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <CircularProgress />
+            </div>
+        )
+    }
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">

@@ -11,9 +11,9 @@ export default async function createReservation(shopId:string,token:string|undef
         body: JSON.stringify(body)
     });
 
-    if(!response.ok){
-        throw new Error("Failed to Update")
-    }
+    // if(!response.ok){
+    //     throw new Error("Failed to Create")
+    // }
 
     return await response.json();
 }
