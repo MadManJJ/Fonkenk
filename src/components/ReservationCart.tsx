@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ReservationItem } from "../../interfaces";
 import getReservations from "@/libs/Reservations/getReservations";
 import { AppDispatch } from "@/redux/store";
@@ -9,6 +9,7 @@ import { RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import deleteReservation from "@/libs/Reservations/deleteReservation";
 import Link from "next/link";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ReservationCart = () => {
 
@@ -17,19 +18,19 @@ const ReservationCart = () => {
     const { data:session } = useSession();
     const token = session?.user.token;
 
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         const fetchData = async () => {
             if(token){
                 const response = await getReservations(token);
                 dispatch(fetchReservation(response.data));
+                setLoading(false);
             }
         }
         fetchData();
     }, [token, dispatch])
 
-    if(reservationArr.length == 0){
-        return <div>No booking</div>
-    }
     // console.log(reservationArr);
 
     const deleteAction = (id:string,reservationItem:ReservationItem) => {
@@ -39,6 +40,18 @@ const ReservationCart = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    if(loading){
+        return (
+            <div className="mt-44">
+                <CircularProgress />
+            </div>
+        )
+    }
+
+    if(reservationArr.length == 0){
+        return <div>No Reservations</div>
     }
 
     return (

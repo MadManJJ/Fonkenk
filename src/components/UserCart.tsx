@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchUsers } from "@/redux/features/userSlice";
 import getUsers from "@/libs/Users/getUsers";
 import { User } from "../../interfaces";
@@ -13,12 +13,11 @@ import deleteUser from "@/libs/Users/deleteUser";
 import { banUser as banUserRedux } from "@/redux/features/userSlice";
 import { unbanUser as unbanUserRedux } from "@/redux/features/userSlice";
 import { removeUser } from "@/redux/features/userSlice";
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const UserCart = () => {
 
     const dispatch = useDispatch<AppDispatch>();
-
     const userArr = useSelector((state: RootState) => state.user.user)
 
     const router = useRouter();
@@ -26,6 +25,8 @@ const UserCart = () => {
     const { data:session } = useSession();
     const token = session?.user.token;
     const role = session?.user.role;
+
+    const [loading, setLoading] = useState(true)
     
     if(role != 'admin'){
         router.push('/auth/signin')
@@ -63,6 +64,7 @@ const UserCart = () => {
             if(token){
                 const response = await getUsers(token);
                 dispatch(fetchUsers(response.data));
+                setLoading(false);
             }
             else{
                 console.log("No token found");
@@ -70,10 +72,6 @@ const UserCart = () => {
         }
         fetchUser();
     },[]);
-
-    if(userArr.length == 0){
-        return <div>Loading...</div>
-    }
 
     const normalUser:User[] = [];
     const bannedUser:User[] = [];
@@ -85,6 +83,18 @@ const UserCart = () => {
             normalUser.push(user);
         }
     })
+
+    if(loading){
+        return (
+            <div className="mt-44">
+                <CircularProgress />
+            </div>
+        )
+    }
+
+    if(userArr.length == 0){
+        return <div>No Users</div>
+    }
 
     return (
         <>
