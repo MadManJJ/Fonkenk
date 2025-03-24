@@ -46,6 +46,6 @@ export const authOptions:AuthOptions = {
       }
     },
     pages: {
-      signIn: "/auth/signin", // 👈 Custom sign-in page
+      signIn: "/auth/signin", // Custom sign-in page
     }
 }

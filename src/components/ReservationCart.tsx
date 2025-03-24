@@ -63,7 +63,7 @@ const ReservationCart = () => {
                         >
                             Delete
                         </button>
-                        <Link href={`edit/${reservationItem._id}`}>
+                        <Link href={`edit/${reservationItem._id}?shopId=${reservationItem.shop._id}&date=${reservationItem.date}`}>
                             <button className="bg-blue-500 text-white py-1.5 px-4 rounded-lg hover:bg-blue-600 transition">
                                 Edit
                             </button>

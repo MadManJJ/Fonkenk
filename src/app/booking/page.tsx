@@ -24,6 +24,12 @@ const BookingPage = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = async (date:string,selectedShopId:string) => {
+
+    if (dayjs(date).isBefore(dayjs(), 'day')) {
+      setError("Cannot select a past date.");
+      return;
+    }
+
     const body = {
       date: dayjs(date).format("YYYY/MM/DD")
     }
@@ -34,7 +40,7 @@ const BookingPage = () => {
         router.push('/mybooking')
       }
       else{
-        setError("Cannot create Reservation");
+        setError("Cannot create anymore Reservation");
       }
     }
   }

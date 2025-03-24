@@ -12,12 +12,18 @@ import { useSession } from "next-auth/react";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { updateReservation as updateReservationRedux } from "@/redux/features/cartSlice";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const EditBookingPage = ({ params }: { params: { id: string } }) => {
+
+  const searchParams = useSearchParams();
+  const defaultShopId = searchParams.get("shopId") || null;
+  const defaultDate = searchParams.get("date") || null;
+  const defaultDateObj = defaultDate ? dayjs(defaultDate, "YYYY/MM/DD") : null;
+
   const [shops, setShops] = useState<Shop[] | null>(null);
-  const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
-  const [date, setDate] = useState<Dayjs | null>(null);
+  const [selectedShopId, setSelectedShopId] = useState<string | null>(defaultShopId || null);
+  const [date, setDate] = useState<Dayjs | null>(defaultDateObj || null);
   const { data: session } = useSession();
   const token = session?.user.token;
   const router = useRouter();

@@ -21,6 +21,18 @@ const SignUp = () => {
     setError("");
     setLoading(true);
 
+    if(tel.length != 0 && /[^0-9]/.test(tel)){
+      setError("Invalid Tel.");
+      setLoading(false);
+      return;
+    }
+
+    if(password.length < 6){
+      setError("Password is too short");
+      setLoading(false);
+      return;
+    }
+
     if(name && email && password && role && tel){
       const response = await userRegister(name,email,password,role,tel);
       if(response.success){
