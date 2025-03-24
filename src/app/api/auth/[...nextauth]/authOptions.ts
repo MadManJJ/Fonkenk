@@ -20,7 +20,7 @@ export const authOptions:AuthOptions = {
               if(!credentials){
                 return null;
               }
-              // const user = {id:"1", name:"JOHN", email:"hs@example.com"}
+               //const user = {id:"1", name:"JOHN", email:"hs@example.com"}
               const user = await userLogin(credentials.email, credentials.password);
         
               if (user) {

@@ -43,40 +43,41 @@ const SignUp = () => {
     }
 
   return (
-    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+    <div className="flex min-h-screen flex-col justify-center items-center px-6 py-12 lg:px-8 bg-blue-900">
+  <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+    <h2 className="mt-10 text-center text-3xl font-bold tracking-tight text-white">
+      Sign Up
+    </h2>
+  </div>
 
-        <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
+  <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form onSubmit={handleSignUp} className="space-y-6">
+      {error && <p className="text-red-500 text-center">{error}</p>}
+      <InputForm onInputChange={(value: string) => { setName(value); }} labelText="Name" />
+      <InputForm onInputChange={(value: string) => { setEmail(value); }} labelText="Email" />
+      <InputForm onInputChange={(value: string) => { setPassword(value); }} labelText="Password" />
+      <InputForm onInputChange={(value: string) => { setRole(value); }} labelText="Role" />
+      <InputForm onInputChange={(value: string) => { setTel(value); }} labelText="Tel." />
+
+      <div>
+        <button
+          type="submit"
+          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+        >
           Sign Up
-        </h2>
+        </button>
       </div>
+    </form>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={handleSignUp} className="space-y-6">
-        {error && <p className="text-red-500 text-center">{error}</p>}
-          <InputForm onInputChange={(value:string) => {setName(value)}} labelText="Name"/>
-          <InputForm onInputChange={(value:string) => {setEmail(value)}} labelText="Email"/>
-          <InputForm onInputChange={(value:string) => {setPassword(value)}} labelText="Password"/>
-          <InputForm onInputChange={(value:string) => {setRole(value)}} labelText="Role"/>
-          <InputForm onInputChange={(value:string) => {setTel(value)}} labelText="Tel."/>
+    <p className="mt-10 text-center text-sm text-gray-400">
+      Already a Member?{' '}
+      <a href="/auth/signin" className="font-semibold text-indigo-600 hover:text-indigo-500">
+        Sign In
+      </a>
+    </p>
+  </div>
+</div>
 
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
-        <p className="mt-10 text-center text-sm/6 text-gray-500">
-            Already a Member?{' '}
-            <a href="/auth/signin" className="font-semibold text-indigo-600 hover:text-indigo-500">
-              Sign In
-            </a>
-          </p>
-      </div>
-    </div>
   );
 };
 
