@@ -45,3 +45,14 @@ export interface UpdateReservationDto {
 export interface CreateReservatinDto {
     date: string
 }
+
+export interface ConnectedReservation {
+    userName: string;
+    _id: string;
+    user: string;
+    shop: Shop;
+    date: string;
+    createdAt: string;
+    __v: string;
+}
+

@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { ReservationItem } from "../../interfaces";
+import { ConnectedReservation, ReservationItem } from "../../interfaces";
 import getReservations from "@/libs/Reservations/getReservations";
 import { AppDispatch } from "@/redux/store";
 import { fetchReservation, removeReservation } from "@/redux/features/cartSlice";
@@ -10,10 +10,22 @@ import { useSession } from "next-auth/react";
 import deleteReservation from "@/libs/Reservations/deleteReservation";
 import Link from "next/link";
 import CircularProgress from "@mui/material/CircularProgress";
+import { fetchUsers } from "@/redux/features/userSlice";
+import getUsers from "@/libs/Users/getUsers";
 
 const ReservationCart = () => {
     const dispatch = useDispatch<AppDispatch>();
     const reservationArr = useSelector((state: RootState) => state.cart.reservationItems);
+    const userArr = useSelector((state: RootState) => state.user.user);
+
+    const connectedReservations = reservationArr.map((reservation) => {
+        const userInfo = userArr.find((user) => user._id === reservation.user);
+        return {
+          ...reservation,
+          userName: userInfo ? userInfo.name : "Unknown User", // Add user name
+        };
+      });
+
     const { data: session } = useSession();
     const token = session?.user.token;
     const [loading, setLoading] = useState(true);
@@ -23,8 +35,13 @@ const ReservationCart = () => {
             if (token) {
                 const response = await getReservations(token);
                 dispatch(fetchReservation(response.data));
-                setLoading(false);
             }
+            if(userArr.length == 0 && token){
+                const response = await getUsers(token);
+                dispatch(fetchUsers(response.data));
+                console.log("FETCH")
+            }
+            setLoading(false);
         };
         fetchData();
     }, [token, dispatch]);
@@ -52,18 +69,19 @@ const ReservationCart = () => {
 
     return (
         <div className="max-w-3xl mx-auto p-6 space-y-4">
-            {reservationArr.map((reservationItem: ReservationItem) => (
-                <div className="bg-white shadow-md rounded-lg p-5 border border-gray-200" key={reservationItem._id}>
-                    <div className="text-gray-700 text-sm">{reservationItem.date}</div>
-                    {reservationItem.shop && <div className="text-gray-900 font-medium text-base">{reservationItem.shop.name}</div>}
+            {connectedReservations.map((connectedReservation: ConnectedReservation) => (
+                <div className="bg-white shadow-md rounded-lg p-5 border border-gray-200" key={connectedReservation._id}>
+                    <div className="text-gray-700 text-sm">{connectedReservation.date}</div>
+                    {connectedReservation.shop && <div className="text-gray-900 font-medium text-base">{connectedReservation.shop.name}</div>}
+                    <div className="text-gray-900 font-medium text-base">{connectedReservation.userName}</div>
                     <div className="flex space-x-3 mt-3">
                         <button
                             className="bg-red-500 text-white py-1.5 px-4 rounded-lg hover:bg-red-600 transition"
-                            onClick={() => deleteAction(reservationItem._id, reservationItem)}
+                            onClick={() => deleteAction(connectedReservation._id, connectedReservation)}
                         >
                             Delete
                         </button>
-                        <Link href={`edit/${reservationItem._id}?shopId=${reservationItem.shop._id}&date=${reservationItem.date}`}>
+                        <Link href={`edit/${connectedReservation._id}?shopId=${connectedReservation.shop._id}&date=${connectedReservation.date}`}>
                             <button className="bg-blue-500 text-white py-1.5 px-4 rounded-lg hover:bg-blue-600 transition">
                                 Edit
                             </button>

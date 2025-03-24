@@ -11,12 +11,12 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
   const [tel, setTel] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (e: React.FormEvent) => {
+    const role = 'user';
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -68,7 +68,6 @@ const SignUp = () => {
       <InputForm onInputChange={(value: string) => { setName(value); }} labelText="Name" />
       <InputForm onInputChange={(value: string) => { setEmail(value); }} labelText="Email" />
       <InputForm onInputChange={(value: string) => { setPassword(value); }} labelText="Password" />
-      <InputForm onInputChange={(value: string) => { setRole(value); }} labelText="Role" />
       <InputForm onInputChange={(value: string) => { setTel(value); }} labelText="Tel." />
 
       <div>
