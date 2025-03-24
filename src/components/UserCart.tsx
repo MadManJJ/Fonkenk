@@ -27,7 +27,7 @@ const UserCart = () => {
     const [loading, setLoading] = useState(true)
     
     if(role != 'admin'){
-        router.push('/auth/signin')
+        router.push('/api/auth/signin')
     }
 
     const handleBan = async (id:string) => {
