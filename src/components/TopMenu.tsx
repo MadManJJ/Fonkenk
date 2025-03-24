@@ -8,28 +8,40 @@ export default function TopMenu() {
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center h-16 bg-gray-800 text-white">
+      <div className="flex justify-center items-center h-16 bg-emerald-50 text-emerald-800">
         Loading...
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-between px-6 py-2 bg-gray-900 text-white shadow-md z-[20] border-b border-gray-700">
+    <div className="flex items-center justify-between px-6 py-3 bg-white text-emerald-800 shadow-sm z-[20] border-b border-emerald-100">
       <div className="flex items-center space-x-6">
         {session ? (
-          <Link href="/auth/signout" className="text-cyan-400 hover:text-cyan-300 transition font-semibold">
-            Sign-Out
+          <Link 
+            href="/auth/signout" 
+            className="text-emerald-600 hover:text-emerald-800 transition font-medium flex items-center"
+          >
+            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Sign Out
           </Link>
         ) : (
-          <Link href="/api/auth/signin" className="text-cyan-400 hover:text-cyan-300 transition font-semibold">
-            Sign-In
+          <Link 
+            href="/api/auth/signin" 
+            className="text-emerald-600 hover:text-emerald-800 transition font-medium flex items-center"
+          >
+            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+            Sign In
           </Link>
         )}
         {session?.user.role === "admin" ? (
-          <TopMenuItem title="All Booking" pageRef="/mybooking" />
+          <TopMenuItem title="All Bookings" pageRef="/mybooking" />
         ) : (
-          <TopMenuItem title="My Booking" pageRef="/mybooking" />
+          <TopMenuItem title="My Bookings" pageRef="/mybooking" />
         )}
       </div>
       
@@ -37,7 +49,7 @@ export default function TopMenu() {
         <TopMenuItem title="Shops" pageRef="/shops" />
         <TopMenuItem title="Booking" pageRef="/booking" />
         {session?.user.role === "admin" && (
-          <TopMenuItem title="All User" pageRef="/users" />
+          <TopMenuItem title="Manage Users" pageRef="/users" />
         )}
         <TopMenuItem title="Home" pageRef="/" />
       </div>
