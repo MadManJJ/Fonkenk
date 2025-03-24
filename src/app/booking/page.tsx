@@ -38,7 +38,6 @@ const BookingPage = () => {
 
   return (
     <div>
-      <h1>Book A Reservation</h1>
       {error && <p className="text-red-500 text-center">{error}</p>}
       <BookingForm onSubmit={handleSubmit}/>
     </div>

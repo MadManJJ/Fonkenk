@@ -4,78 +4,75 @@ import { ReservationItem } from "../../interfaces";
 import getReservations from "@/libs/Reservations/getReservations";
 import { AppDispatch } from "@/redux/store";
 import { fetchReservation, removeReservation } from "@/redux/features/cartSlice";
-import { useSelector,useDispatch  } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import deleteReservation from "@/libs/Reservations/deleteReservation";
 import Link from "next/link";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ReservationCart = () => {
-
     const dispatch = useDispatch<AppDispatch>();
     const reservationArr = useSelector((state: RootState) => state.cart.reservationItems);
-    const { data:session } = useSession();
+    const { data: session } = useSession();
     const token = session?.user.token;
-
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
-            if(token){
+            if (token) {
                 const response = await getReservations(token);
                 dispatch(fetchReservation(response.data));
                 setLoading(false);
             }
-        }
+        };
         fetchData();
-    }, [token, dispatch])
+    }, [token, dispatch]);
 
-    // console.log(reservationArr);
-
-    const deleteAction = (id:string,reservationItem:ReservationItem) => {
+    const deleteAction = (id: string, reservationItem: ReservationItem) => {
         try {
-            deleteReservation(id,token); // database
-            dispatch(removeReservation(reservationItem)); // redux
+            deleteReservation(id, token);
+            dispatch(removeReservation(reservationItem));
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
-    if(loading){
+    if (loading) {
         return (
-            <div className="mt-44">
+            <div className="flex justify-center items-center min-h-screen">
                 <CircularProgress />
             </div>
-        )
+        );
     }
 
-    if(reservationArr.length == 0){
-        return <div>No Reservations</div>
+    if (reservationArr.length === 0) {
+        return <div className="text-center text-gray-500 text-lg mt-20">No Reservations</div>;
     }
 
     return (
-        <>
-            {
-                reservationArr.map((reservationItem:ReservationItem) => (
-                    <div className="bg-slate-200 rounded px-5 mx-5 py-2 my-2 text-black" key={reservationItem._id}>
-                        <div className="text-sm">{reservationItem.date}</div>
-                        {
-                            reservationItem.shop ? <div className="text-sm">{reservationItem.shop.name}</div> : null
-                        }
-                        <button className="mt-2 bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600" onClick={() => {deleteAction(reservationItem._id,reservationItem)}}>
+        <div className="max-w-3xl mx-auto p-6 space-y-4">
+            {reservationArr.map((reservationItem: ReservationItem) => (
+                <div className="bg-white shadow-md rounded-lg p-5 border border-gray-200" key={reservationItem._id}>
+                    <div className="text-gray-700 text-sm">{reservationItem.date}</div>
+                    {reservationItem.shop && <div className="text-gray-900 font-medium text-base">{reservationItem.shop.name}</div>}
+                    <div className="flex space-x-3 mt-3">
+                        <button
+                            className="bg-red-500 text-white py-1.5 px-4 rounded-lg hover:bg-red-600 transition"
+                            onClick={() => deleteAction(reservationItem._id, reservationItem)}
+                        >
                             Delete
                         </button>
                         <Link href={`edit/${reservationItem._id}`}>
-                            <button className="mt-2 bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600">
+                            <button className="bg-blue-500 text-white py-1.5 px-4 rounded-lg hover:bg-blue-600 transition">
                                 Edit
                             </button>
                         </Link>
                     </div>
-                ))
-            }
-        </>
-    )
-}
+                </div>
+            ))}
+        </div>
+    );
+};
 
-export default ReservationCart
+export default ReservationCart;
