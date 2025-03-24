@@ -23,56 +23,76 @@ export default function ShopList() {
             const response: ShopJson = await getAllShops();
             if (response.success) {
                 setShops(response.data);
-                // Optionally, you can dispatch to Redux to update the store
                 response.data.forEach((shop: Shop) => {
-                    dispatch(addShop(shop)); // Add each shop to the Redux store
+                    dispatch(addShop(shop));
                 });
                 setLoading(false);
             }
         }
         fetchShop();
-    }, [dispatch]); // Add dispatch as dependency
+    }, [dispatch]);
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center my-auto h-screen">
-                <CircularProgress />
+            <div className="flex justify-center items-center my-auto h-[50vh]">
+                <CircularProgress sx={{ color: '#10b981' }} />
             </div>
         )
     }
 
     return (
         <>
-  {shopItems.length === 0 ? (
-    <div className="flex items-center justify-center w-full h-screen bg-blue-900">
-      <div className="text-center text-2xl text-red-600 font-semibold">
-        No Shops Available
-      </div>
-    </div>
-  ) : (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-      {shopItems.map((shopItem) => (
-        <div
-          className="bg-white rounded-lg shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300"
-          key={shopItem.name}
-        >
-          <div className="text-2xl font-semibold text-gray-800">{shopItem.name}</div>
-          <div className="text-sm text-gray-600 mt-2">Address: {shopItem.address}</div>
-          <div className="text-sm text-gray-600 mt-1">Open Time: {shopItem.openTime}</div>
-          <div className="text-sm text-gray-600 mt-1">Close Time: {shopItem.closeTime}</div>
-          <div className="text-sm text-gray-600 mt-1">Phone Number: {shopItem.telephone}</div>
-          <div className="mt-4">
-            <Link href={`/booking?shopId=${shopItem._id}`}>
-              <button className="w-full mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
-                Book
-              </button>
-            </Link>
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
-</>
-
+            {shopItems.length === 0 ? (
+                <div className="flex items-center justify-center w-full h-[50vh]">
+                    <div className="text-center text-2xl text-emerald-700 font-semibold">
+                        No Shops Available
+                    </div>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+                    {shopItems.map((shopItem) => (
+                        <div
+                            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-emerald-100"
+                            key={shopItem.name}
+                        >
+                            <div className="p-6">
+                                <div className="text-xl font-bold text-emerald-800 mb-2">{shopItem.name}</div>
+                                <div className="space-y-2 text-emerald-700">
+                                    <div className="flex items-start">
+                                        <svg className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span>{shopItem.address}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span>{shopItem.openTime} - {shopItem.closeTime}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                        </svg>
+                                        <span>{shopItem.telephone}</span>
+                                    </div>
+                                </div>
+                                <div className="px-6 pb-6">
+                                    <Link href={`/booking?shopId=${shopItem._id}`}>
+                                        <button className="w-full mt-4 px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-200 font-medium flex items-center justify-center">
+                                            Book Now
+                                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                            </svg>
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </>
     )
 }

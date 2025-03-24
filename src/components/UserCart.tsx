@@ -16,10 +16,8 @@ import { removeUser } from "@/redux/features/userSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 
 const UserCart = () => {
-
     const dispatch = useDispatch<AppDispatch>();
     const userArr = useSelector((state: RootState) => state.user.user)
-
     const router = useRouter();
     
     const { data:session } = useSession();
@@ -86,73 +84,110 @@ const UserCart = () => {
 
     if(loading){
         return (
-            <div className="mt-44">
-                <CircularProgress />
+            <div className="mt-44 flex justify-center">
+                <CircularProgress sx={{ color: '#10b981' }} />
             </div>
         )
     }
 
     if(userArr.length == 0){
-        return <div>No Users</div>
+        return (
+            <div className="text-center py-10 text-emerald-700">
+                No Users Found
+            </div>
+        )
     }
 
     return (
-        <>
-            <div className="text-left flex flex-col flex-wrap">
-                <h1 className="mb-2 font-semibold text-xl">Normal User</h1>
-                {
-                    normalUser.map((user:User) => (
-                        <section className="flex bg-slate-800 p-2 mb-3">
-                            <div className="my-auto ml-2">
-                                <div>Name : {user.name}</div>
-                                <div>Email : {user.email}</div>
-                                <div>Tel : {user.telephone}</div>
-                                <div>Role : {user.role}</div>
+        <div className="p-6 max-w-4xl mx-auto">
+            <h1 className="text-2xl font-bold text-emerald-800 mb-6">User Management</h1>
+            
+            {/* Normal Users Section */}
+            <div className="mb-10">
+                <h2 className="text-xl font-semibold text-emerald-700 mb-4 border-b border-emerald-200 pb-2">
+                    Active Users
+                </h2>
+                <div className="space-y-4">
+                    {normalUser.map((user:User) => (
+                        <div key={user._id} className="bg-white rounded-lg shadow-md p-4 border border-emerald-100 hover:shadow-lg transition-shadow">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <p className="text-sm text-emerald-600">Name</p>
+                                    <p className="font-medium">{user.name}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-emerald-600">Email</p>
+                                    <p className="font-medium">{user.email}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-emerald-600">Role</p>
+                                    <p className="font-medium capitalize">{user.role}</p>
+                                </div>
                             </div>
-                            <div className="ml-auto">
-                                <button className="w-full block p-2 mb-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
-                                onClick={(e) => (handleDelete(user._id))}
-                                >Delete</button>
-                                {
-                                    user.role != 'admin' ?
-                                    <button 
-                                    className="w-full block p-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
-                                    onClick={(e) => (handleBan(user._id))}
-                                    >Ban</button>
-                                    :
-                                    null 
-                                }
-
-                            </div>
-                        </section>
-                    ))
-                }
-            </div>
-            <div className="text-left flex flex-col flex-wrap">
-            <h1>Banned User</h1>
-            {
-                    bannedUser.map((user:User) => (
-                        <section className="flex bg-slate-800 p-2 mb-3">
-                            <div className="my-auto ml-2">
-                                <div>Name : {user.name}</div>
-                                <div>Email : {user.email}</div>
-                                <div>Tel : {user.telephone}</div>
-                                <div>Role : {user.role}</div>
-                            </div>
-                            <div className="ml-auto">
-                                <button className="w-full block p-2 mb-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
-                                onClick={(e) => (handleDelete(user._id))}
-                                >Delete</button>
+                            <div className="flex justify-end space-x-3 mt-4">
                                 <button 
-                                    className="w-full block p-2 bg-slate-900 mr-2 ease duration-150 hover:bg-slate-700"
-                                    onClick={(e) => (handleUnBan(user._id))}
-                                    >UnBan</button>
+                                    onClick={() => handleDelete(user._id)}
+                                    className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                                >
+                                    Delete
+                                </button>
+                                {user.role !== 'admin' && (
+                                    <button 
+                                        onClick={() => handleBan(user._id)}
+                                        className="px-4 py-2 bg-amber-100 text-amber-700 rounded-md hover:bg-amber-200 transition-colors"
+                                    >
+                                        Ban
+                                    </button>
+                                )}
                             </div>
-                        </section>
-                    ))
-                }
+                        </div>
+                    ))}
+                </div>
             </div>
-        </>
+
+            {/* Banned Users Section */}
+            {bannedUser.length > 0 && (
+                <div>
+                    <h2 className="text-xl font-semibold text-emerald-700 mb-4 border-b border-emerald-200 pb-2">
+                        Banned Users
+                    </h2>
+                    <div className="space-y-4">
+                        {bannedUser.map((user:User) => (
+                            <div key={user._id} className="bg-white rounded-lg shadow-md p-4 border border-emerald-100 hover:shadow-lg transition-shadow">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <p className="text-sm text-emerald-600">Name</p>
+                                        <p className="font-medium">{user.name}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-emerald-600">Email</p>
+                                        <p className="font-medium">{user.email}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-emerald-600">Role</p>
+                                        <p className="font-medium capitalize">{user.role}</p>
+                                    </div>
+                                </div>
+                                <div className="flex justify-end space-x-3 mt-4">
+                                    <button 
+                                        onClick={() => handleDelete(user._id)}
+                                        className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                                    >
+                                        Delete
+                                    </button>
+                                    <button 
+                                        onClick={() => handleUnBan(user._id)}
+                                        className="px-4 py-2 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors"
+                                    >
+                                        Unban
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
     )
 }
 

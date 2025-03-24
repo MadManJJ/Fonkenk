@@ -45,7 +45,5 @@ export const authOptions:AuthOptions = {
         return session;
       }
     },
-    pages: {
-      signIn: "/auth/signin", // Custom sign-in page
-    }
+
 }

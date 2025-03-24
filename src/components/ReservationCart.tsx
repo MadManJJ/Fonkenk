@@ -26,11 +26,9 @@ const ReservationCart = () => {
         const userInfo = userArr.find((user) => user._id === reservation.user);
         return {
           ...reservation,
-          userName: userInfo ? userInfo.name : "Unknown User", // Add user name
+          userName: userInfo ? userInfo.name : "Unknown User",
         };
-      });
-
-
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,9 +45,9 @@ const ReservationCart = () => {
         fetchData();
     }, [token, dispatch]);
 
-    const deleteAction = (id: string, reservationItem: ReservationItem) => {
+    const deleteAction = async (id: string, reservationItem: ReservationItem) => {
         try {
-            deleteReservation(id, token);
+            await deleteReservation(id, token);
             dispatch(removeReservation(reservationItem));
         } catch (error) {
             console.log(error);
@@ -58,37 +56,71 @@ const ReservationCart = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <CircularProgress />
+            <div className="flex justify-center items-center min-h-[50vh]">
+                <CircularProgress sx={{ color: '#10b981' }} />
             </div>
         );
     }
 
     if (reservationArr.length === 0) {
-        return <div className="text-center text-gray-500 text-lg mt-20">No Reservations</div>;
+        return (
+            <div className="text-center py-16">
+                <div className="text-emerald-700 text-xl font-medium mb-4">No Reservations Found</div>
+                <Link href="/booking">
+                    <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors">
+                        Book Your First Session
+                    </button>
+                </Link>
+            </div>
+        );
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-4">
+        <div className="max-w-4xl mx-auto space-y-6">
             {connectedReservations.map((connectedReservation: ConnectedReservation) => (
-                <div className="bg-white shadow-md rounded-lg p-5 border border-gray-200" key={connectedReservation._id}>
-                    <div className="text-gray-700 text-sm">{connectedReservation.date}</div>
-                    {connectedReservation.shop && <div className="text-gray-900 font-medium text-base">{connectedReservation.shop.name}</div>}
-                    {
-                        session?.user.role == 'admin' 
-                        ? <div className="text-gray-900 font-medium text-base">{connectedReservation.userName}</div> 
-                        : <div className="text-gray-900 font-medium text-base">{session?.user.name}</div>
-                    }
-                    <div className="flex space-x-3 mt-3">
+                <div 
+                    className="bg-white rounded-xl shadow-sm p-6 border border-emerald-100 hover:shadow-md transition-shadow" 
+                    key={connectedReservation._id}
+                >
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <p className="text-sm text-emerald-600">Date</p>
+                            <p className="font-medium text-emerald-800">{connectedReservation.date}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-emerald-600">Spa Location</p>
+                            <p className="font-medium text-emerald-800">
+                                {connectedReservation.shop?.name || "Not specified"}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-emerald-600">
+                                {session?.user.role === 'admin' ? "Client" : "Your Name"}
+                            </p>
+                            <p className="font-medium text-emerald-800">
+                                {session?.user.role === 'admin' 
+                                    ? connectedReservation.userName 
+                                    : session?.user.name}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-end space-x-4">
                         <button
-                            className="bg-red-500 text-white py-1.5 px-4 rounded-lg hover:bg-red-600 transition"
+                            className="px-5 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors flex items-center"
                             onClick={() => deleteAction(connectedReservation._id, connectedReservation)}
                         >
-                            Delete
+                            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Cancel
                         </button>
-                        <Link href={`edit/${connectedReservation._id}?shopId=${connectedReservation.shop._id}&date=${connectedReservation.date}`}>
-                            <button className="bg-blue-500 text-white py-1.5 px-4 rounded-lg hover:bg-blue-600 transition">
-                                Edit
+                        <Link href={`edit/${connectedReservation._id}?shopId=${connectedReservation.shop?._id}&date=${connectedReservation.date}`}>
+                            <button className="px-5 py-2 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition-colors flex items-center">
+                                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Reschedule
                             </button>
                         </Link>
                     </div>
