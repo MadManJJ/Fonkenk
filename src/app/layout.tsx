@@ -7,6 +7,15 @@ import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 import ReduxProvider from "@/redux/ReduxProvider";
 import TopMenu from "@/components/TopMenu";
 
+import { Nunito } from "next/font/google";
+import Footer from "@/components/Footer";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"], 
+  variable: "--font-nunito", 
+});
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,12 +32,13 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={nunito.variable}>
+      <body className="font-sans">
         <ReduxProvider>
           <NextAuthProvider session={session}>
             <TopMenu/>
             {children}
+            <Footer/>
           </NextAuthProvider>
         </ReduxProvider>
       </body>

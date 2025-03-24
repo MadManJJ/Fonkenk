@@ -6,47 +6,41 @@ import { Link } from "@mui/material";
 export default function TopMenu() {
   const { data: session, status } = useSession();  
 
-
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-16 bg-gray-800 text-white">
+        Loading...
+      </div>
+    );
   }
 
   return (
-    <div className="flex items-center justify-end p-0 bg-gray-800 text-white z-[20]">
-      <div className="flex flex-row absolute left-0">
-        {
-          session ? (
-            <Link href="/auth/signout">
-              <div className="flex items-center h-full px-2 py-5 text-cyan-600 text-lg">
-                Sign-Out
-              </div>
-            </Link>
-          ) : (
-            <Link href="/api/auth/signin">
-              <div className="flex items-center h-full px-2 py-5 text-cyan-600 text-lg">
-                Sign-In
-              </div>
-            </Link>
-          )
-        }
-        {
-          session?.user.role === "admin" ? (
-            <TopMenuItem title="All Booking" pageRef="/mybooking" />
-          ) : (
-            <TopMenuItem title="My Booking" pageRef="/mybooking" />
-          )
-        }
+    <div className="flex items-center justify-between px-6 py-2 bg-gray-900 text-white shadow-md z-[20] border-b border-gray-700">
+      <div className="flex items-center space-x-6">
+        {session ? (
+          <Link href="/auth/signout" className="text-cyan-400 hover:text-cyan-300 transition font-semibold">
+            Sign-Out
+          </Link>
+        ) : (
+          <Link href="/api/auth/signin" className="text-cyan-400 hover:text-cyan-300 transition font-semibold">
+            Sign-In
+          </Link>
+        )}
+        {session?.user.role === "admin" ? (
+          <TopMenuItem title="All Booking" pageRef="/mybooking" />
+        ) : (
+          <TopMenuItem title="My Booking" pageRef="/mybooking" />
+        )}
       </div>
-
-      <TopMenuItem title="Shops" pageRef="/shops" />
-      <TopMenuItem title="Booking" pageRef="/booking" />
       
-      {
-        session?.user.role === "admin" ? (
+      <div className="flex items-center space-x-6">
+        <TopMenuItem title="Shops" pageRef="/shops" />
+        <TopMenuItem title="Booking" pageRef="/booking" />
+        {session?.user.role === "admin" && (
           <TopMenuItem title="All User" pageRef="/users" />
-        ) : null
-      }
-      <TopMenuItem title="Home" pageRef="/" />
+        )}
+        <TopMenuItem title="Home" pageRef="/" />
+      </div>
     </div>
   );
 }
