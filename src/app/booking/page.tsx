@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react"
 import { AppDispatch } from "@/redux/store"
 import { useDispatch  } from "react-redux";
 import { addReservation } from "@/redux/features/cartSlice"
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import createReservation from "@/libs/Reservations/createReservation"
 import BookingForm from "@/components/BookingForm"
 import { useState } from "react";
@@ -17,6 +17,9 @@ const BookingPage = () => {
   const token = session?.user.token;
 
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const selectedShopId = searchParams.get("shopId") || null;
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -39,7 +42,7 @@ const BookingPage = () => {
   return (
     <div>
       {error && <p className="text-red-500 text-center">{error}</p>}
-      <BookingForm onSubmit={handleSubmit}/>
+      <BookingForm onSubmit={handleSubmit} defaultShopId={selectedShopId}/>
     </div>
   )
 }

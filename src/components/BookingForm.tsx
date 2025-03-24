@@ -9,12 +9,18 @@ import { Dayjs } from "dayjs";
 import { Shop, ShopJson } from "../../interfaces";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const BookingForm = ({ onSubmit }: { onSubmit: Function }) => {
+const BookingForm = ({ onSubmit, defaultShopId }: { onSubmit: Function, defaultShopId?: string }) => {
     const [shops, setShops] = useState<Shop[] | null>(null);
-    const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
+
+    const [selectedShopId, setSelectedShopId] = useState<string | null>(defaultShopId || null);
+
+    if(!defaultShopId && shops && !selectedShopId){
+        setSelectedShopId(shops[0]._id)
+    }
+
     const [date, setDate] = useState<Dayjs | null>(null);
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
         const fetchShop = async () => {
             const response: ShopJson = await getAllShops();

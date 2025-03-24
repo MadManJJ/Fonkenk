@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import getAllShops from "@/libs/Shops/getAllShops";
 import { Shop, ShopJson } from "../../interfaces";
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from "next/link";
 
 export default function ShopList() {
     const [shops, setShops] = useState<Shop[] | null>(null);
@@ -61,9 +62,11 @@ export default function ShopList() {
           <div className="text-sm text-gray-600 mt-1">Close Time: {shopItem.closeTime}</div>
           <div className="text-sm text-gray-600 mt-1">Phone Number: {shopItem.telephone}</div>
           <div className="mt-4">
-            <button className="w-full mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
-              View Details
-            </button>
+            <Link href={`/booking?shopId=${shopItem._id}`}>
+              <button className="w-full mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                Book
+              </button>
+            </Link>
           </div>
         </div>
       ))}
