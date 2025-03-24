@@ -19,7 +19,7 @@ const BookingPage = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const selectedShopId = searchParams.get("shopId") || null;
+  const defaultShopId = searchParams.get("shopId") || null;
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -42,7 +42,7 @@ const BookingPage = () => {
   return (
     <div>
       {error && <p className="text-red-500 text-center">{error}</p>}
-      <BookingForm onSubmit={handleSubmit} defaultShopId={selectedShopId}/>
+      <BookingForm onSubmit={handleSubmit} defaultShopId={defaultShopId}/>
     </div>
   )
 }

@@ -9,7 +9,7 @@ import { Dayjs } from "dayjs";
 import { Shop, ShopJson } from "../../interfaces";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const BookingForm = ({ onSubmit, defaultShopId }: { onSubmit: Function, defaultShopId?: string }) => {
+const BookingForm = ({ onSubmit, defaultShopId }: { onSubmit: Function, defaultShopId?: string | null }) => {
     const [shops, setShops] = useState<Shop[] | null>(null);
 
     const [selectedShopId, setSelectedShopId] = useState<string | null>(defaultShopId || null);
