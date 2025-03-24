@@ -38,8 +38,9 @@ export default function TopMenu() {
         }
       </div>
 
+      <TopMenuItem title="Shops" pageRef="/shops" />
       <TopMenuItem title="Booking" pageRef="/booking" />
-
+      
       {
         session?.user.role === "admin" ? (
           <TopMenuItem title="All User" pageRef="/users" />
