@@ -113,15 +113,15 @@ const UserCart = () => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <p className="text-sm text-emerald-600">Name</p>
-                                    <p className="font-medium">{user.name}</p>
+                                    <p className="font-medium text-emerald-600">{user.name}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-emerald-600">Email</p>
-                                    <p className="font-medium">{user.email}</p>
+                                    <p className="font-medium text-emerald-600">{user.email}</p>
                                 </div>
                                 <div>
                                     <p className="text-sm text-emerald-600">Role</p>
-                                    <p className="font-medium capitalize">{user.role}</p>
+                                    <p className="font-medium capitalize text-emerald-600">{user.role}</p>
                                 </div>
                             </div>
                             <div className="flex justify-end space-x-3 mt-4">
@@ -157,15 +157,15 @@ const UserCart = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <p className="text-sm text-emerald-600">Name</p>
-                                        <p className="font-medium">{user.name}</p>
+                                        <p className="font-medium text-emerald-600">{user.name}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-emerald-600">Email</p>
-                                        <p className="font-medium">{user.email}</p>
+                                        <p className="font-medium text-emerald-600">{user.email}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-emerald-600">Role</p>
-                                        <p className="font-medium capitalize">{user.role}</p>
+                                        <p className="font-medium capitalize text-emerald-600">{user.role}</p>
                                     </div>
                                 </div>
                                 <div className="flex justify-end space-x-3 mt-4">
