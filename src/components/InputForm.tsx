@@ -3,17 +3,16 @@ import React from 'react'
 const InputForm = ({onInputChange, labelText} : {onInputChange:Function, labelText:string}) => {
   return (
     <div>
-        <label htmlFor={labelText} className="block text-sm/6 font-medium text-white">
+        <label htmlFor={labelText} className="block text-sm font-medium text-emerald-700">
             {labelText}
         </label>
-        <div className="mt-2">
+        <div className="mt-1">
         <input
             id={labelText}
             name={labelText}
-            type={labelText}
+            type={labelText.toLowerCase().includes('password') ? 'password' : 'text'}
             required
-            autoComplete={labelText}
-            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            className="block w-full rounded-lg border border-emerald-300 px-3 py-2 text-emerald-900 shadow-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
             onChange={(e) => onInputChange(e.target.value)}
         />
         </div>
