@@ -133,7 +133,7 @@ const SignUp = () => {
 
             <div className="mt-6">
               <a
-                href="/auth/signin"
+                href="/api/auth/signin"
                 className="w-full flex justify-center py-2 px-4 border border-emerald-600 rounded-md shadow-sm text-sm font-medium text-emerald-600 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition duration-300"
               >
                 Sign in instead
